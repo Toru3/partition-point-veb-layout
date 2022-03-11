@@ -1,0 +1,27 @@
+[package]
+name = "partition-point-veb-layout"
+version = "0.1.0"
+authors = ["Toru3 <ryuutet@gmail.com>"]
+edition = "2021"
+license = "AGPL-3.0-or-later"
+documentation = "https://docs.rs/partition-point-veb-layout/"
+repository = "https://gitlab.com/Toru3/partition-point-veb-layout"
+readme = "README.md"
+keywords = ["algorithm", "partition_point", "binary_search", "van Emde Boas layout", "cache-oblivious"]
+categories = ["algorithms"]
+
+[dependencies]
+rayon = { version = "1.5.1", optional = true }
+[features]
+default = ["rayon"]
+[dev-dependencies]
+criterion = { version = "0.3.5", features = ["html_reports"] }
+pcg_rand = "0.13.0"
+rand = "0.8.5"
+rayon = "1.5.1"
+smallvec = { version = "1.8.0", features = ["const_generics"] }
+[profile.dev]
+opt-level = 1
+[[bench]]
+name = "bench"
+harness = false
