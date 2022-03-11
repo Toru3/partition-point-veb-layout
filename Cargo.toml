@@ -3,11 +3,12 @@ name = "partition-point-veb-layout"
 version = "0.1.0"
 authors = ["Toru3 <ryuutet@gmail.com>"]
 edition = "2021"
+description = "partition_point van Emde Boas layout"
 license = "AGPL-3.0-or-later"
 documentation = "https://docs.rs/partition-point-veb-layout/"
 repository = "https://gitlab.com/Toru3/partition-point-veb-layout"
 readme = "README.md"
-keywords = ["algorithm", "partition_point", "binary_search", "van Emde Boas layout", "cache-oblivious"]
+keywords = ["algorithm", "partition_point", "binary_search", "van_Emde_Boas_layout", "cache-oblivious"]
 categories = ["algorithms"]
 
 [dependencies]
