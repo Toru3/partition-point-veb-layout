@@ -110,7 +110,7 @@ pub fn bench(c: &mut Criterion) {
 
 criterion_group! {
     name = benches;
-    config = Criterion::default().measurement_time(std::time::Duration::new(10, 0));
+    config = Criterion::default().measurement_time(std::time::Duration::new(60, 0));
     targets = bench
 }
 criterion_main!(benches);
