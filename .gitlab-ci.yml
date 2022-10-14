@@ -1,21 +1,28 @@
 image: "rust:latest"
 
-.run_test: &run_test
+.run_check: &run_check
   script:
     - rustup update
     - rustup component add rustfmt clippy
     - rustup --version && rustc --version && cargo --version
     - cargo fmt --all --check --verbose
     - cargo clippy --workspace --all-targets --all-features --verbose -- -D warnings
+.run_test: &run_test
+  script:
+    - rustup update
     - cargo test --workspace --all-features --verbose
-  cache:
-    key:
-      files:
-        - Cargo.lock
-    paths:
-      - target/
 
 # Use cargo to test the project
+build:stable:
+  <<: *run_check
+  before_script:
+    - rustup default stable
+
+build:beta:
+  <<: *run_check
+  before_script:
+    - rustup default beta
+
 test:stable:
   <<: *run_test
   before_script:

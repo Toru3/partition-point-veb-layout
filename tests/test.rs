@@ -136,7 +136,6 @@ fn test_mid1() {
         test_short_aux(1013 * n + 1009);
     }
 }
-/*
 #[test]
 fn test_mid2() {
     for n in 250..500 {
@@ -155,6 +154,7 @@ fn test_mid4() {
         test_short_aux(1013 * n + 1009);
     }
 }
+/*
 #[test]
 fn test_long() {
     let n = 3 * 1024 * 1024 * 1024;
