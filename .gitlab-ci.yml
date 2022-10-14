@@ -13,13 +13,15 @@ image: "rust:latest"
     - cargo test --workspace --all-features --verbose
 
 # Use cargo to test the project
-build:stable:
+check:stable:
   <<: *run_check
+  stage: build
   before_script:
     - rustup default stable
 
-build:beta:
+check:beta:
   <<: *run_check
+  stage: build
   before_script:
     - rustup default beta
 
