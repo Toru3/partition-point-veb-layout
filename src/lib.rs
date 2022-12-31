@@ -7,10 +7,7 @@ pub use index::{veb_index, veb_index_rev};
 /// get vEB layout vector
 pub fn veb_layout<T: Clone>(v: &[T]) -> Vec<T> {
     let l = v.len();
-    (0..l)
-        .into_iter()
-        .map(|i| v[veb_index_rev(i, l)].clone())
-        .collect()
+    (0..l).map(|i| v[veb_index_rev(i, l)].clone()).collect()
 }
 /// get vEB layout vector (parallel version)
 #[cfg(feature = "rayon")]
@@ -355,10 +352,7 @@ pub mod binary {
 
     pub fn layout<T: Clone>(v: &[T]) -> Vec<T> {
         let l = v.len();
-        (0..l)
-            .into_iter()
-            .map(|i| v[index_rev(i, l)].clone())
-            .collect()
+        (0..l).map(|i| v[index_rev(i, l)].clone()).collect()
     }
     #[cfg(feature = "rayon")]
     pub fn par_layout<T: Clone + Send + Sync>(v: &[T]) -> Vec<T> {

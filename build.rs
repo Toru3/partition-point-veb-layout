@@ -37,14 +37,14 @@ fn ast<W: Write>(dst: &mut W, a: &Ast, indent: usize) -> std::io::Result<()> {
     let space = " ".repeat(4 * indent);
     match a {
         Ast::Leaf(x) => {
-            writeln!(dst, "{}{}", space, x)
+            writeln!(dst, "{space}{x}")
         }
         Ast::Branch(a, b, c) => {
-            writeln!(dst, "{}if func(&v[{}]) {{", space, a)?;
+            writeln!(dst, "{space}if func(&v[{a}]) {{")?;
             ast(dst, b, indent + 1)?;
-            writeln!(dst, "{}}} else {{", space)?;
+            writeln!(dst, "{space}}} else {{")?;
             ast(dst, c, indent + 1)?;
-            writeln!(dst, "{}}}", space)
+            writeln!(dst, "{space}}}")
         }
     }
 }
@@ -52,19 +52,18 @@ fn ast<W: Write>(dst: &mut W, a: &Ast, indent: usize) -> std::io::Result<()> {
 fn ast_print<W: Write>(dst: &mut W, a: &Ast, n: usize) -> std::io::Result<()> {
     writeln!(
         dst,
-        r"pub fn vpp_aux_{}<T, F>(v: &[T], func: &mut F) -> usize
+        r"pub fn vpp_aux_{n}<T, F>(v: &[T], func: &mut F) -> usize
 where
     T: Clone,
     F: FnMut(&T) -> bool,
-{{",
-        n
+{{"
     )?;
     ast(dst, a, 1)?;
     writeln!(dst, "}}\n")
 }
 
 fn generate<W: Write>(dst: &mut W, n: usize) -> std::io::Result<()> {
-    let v = (0..n).into_iter().collect::<Vec<_>>();
+    let v = (0..n).collect::<Vec<_>>();
     let a = veb_layout_ast(&v);
     ast_print(dst, &a, n)
 }

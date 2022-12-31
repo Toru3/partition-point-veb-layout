@@ -70,7 +70,7 @@ mod aux {
 fn test_short_aux(n: usize) {
     dbg!(n);
     {
-        let v = (0..n).into_iter().collect::<Vec<_>>();
+        let v = (0..n).collect::<Vec<_>>();
         let x = aux::veb_layout(&v);
         #[cfg(feature = "rayon")]
         {
@@ -115,8 +115,8 @@ fn test_short_aux(n: usize) {
                 assert_eq!(t, *z);
             }
             if jl != kl || ju != ku {
-                println!("v = {:?}", v);
-                println!("x = {:?}", x);
+                println!("v = {v:?}");
+                println!("x = {x:?}");
                 dbg!(n, t, il, iu, jl, ju, kl, ku);
             }
             assert_eq!(jl, kl);
@@ -219,7 +219,7 @@ fn rev() {
         }
     }
     for n in 2..=1024 {
-        let v = (0..n).into_iter().collect::<Vec<_>>();
+        let v = (0..n).collect::<Vec<_>>();
         let x = binary::layout(&v);
         for t in 0..n {
             let il = v.partition_point(|u| u < &t);
@@ -232,8 +232,8 @@ fn rev() {
                 assert_eq!(t, *z);
             }
             if jl != kl || ju != ku {
-                println!("v = {:?}", v);
-                println!("x = {:?}", x);
+                println!("v = {v:?}");
+                println!("x = {x:?}");
                 dbg!(n, t, il, iu, jl, ju, kl, ku);
             }
             assert_eq!(jl, kl);
@@ -264,8 +264,8 @@ fn rev() {
                 assert_eq!(t, *z);
             }
             if jl != kl || ju != ku {
-                println!("v = {:?}", v);
-                println!("x = {:?}", x);
+                println!("v = {v:?}");
+                println!("x = {x:?}");
                 dbg!(n, t, il, iu, jl, ju, kl, ku);
             }
             assert_eq!(jl, kl);
