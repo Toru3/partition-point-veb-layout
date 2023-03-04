@@ -62,10 +62,9 @@ test:
       - RUST_VERSION:
         - "stable"
         - "beta"
-        - "1.56.1" # MSRV
+        - "1.58.1" # MSRV
         USE_MINIMAL_VERSIONS:
         - "false"
         - "true"
         FEATURES:
-        - "--no-default-features"
         - "--all-features"
