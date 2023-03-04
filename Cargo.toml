@@ -10,6 +10,7 @@ repository = "https://gitlab.com/Toru3/partition-point-veb-layout"
 readme = "README.md"
 keywords = ["algorithm", "partition_point", "binary_search", "van_Emde_Boas_layout", "cache-oblivious"]
 categories = ["algorithms"]
+rust-version = "1.58"
 
 [dependencies]
 rayon = { version = "1.5.1", optional = true }

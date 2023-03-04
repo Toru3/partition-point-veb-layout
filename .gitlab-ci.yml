@@ -1,36 +1,71 @@
 image: "rust:latest"
 
-.run_check: &run_check
+test:
+  stage: test
   script:
-    - rustup update
-    - rustup component add rustfmt clippy
-    - rustup --version && rustc --version && cargo --version
-    - cargo fmt --all --check --verbose
-    - cargo clippy --workspace --all-targets --all-features --verbose -- -D warnings
-.run_test: &run_test
-  script:
-    - rustup update
-    - cargo test --workspace --all-features --verbose
-
-# Use cargo to test the project
-check:stable:
-  <<: *run_check
-  stage: build
-  before_script:
-    - rustup default stable
-
-check:beta:
-  <<: *run_check
-  stage: build
-  before_script:
-    - rustup default beta
-
-test:stable:
-  <<: *run_test
-  before_script:
-    - rustup default stable
-
-test:beta:
-  <<: *run_test
-  before_script:
-    - rustup default beta
+    # キャッシュの設定
+    - if [ "${DISABLE_CACHE:-false}" = "false" ]; then
+    -     export CARGO_HOME="$CI_PROJECT_DIR/cargo"
+    -     export RUSTUP_HOME="$CI_PROJECT_DIR/rustup"
+    -     mkdir -p "$CARGO_HOME" "$RUSTUP_HOME"
+    -     ln -s /usr/local/cargo/bin $CARGO_HOME/bin
+    -     ln -s /usr/local/cargo/env $CARGO_HOME/env
+    - fi
+    # ツールのインストール
+    - rustup toolchain install "$RUST_VERSION" --component rustfmt clippy
+    - rustup install nightly
+    - rustup default "$RUST_VERSION"
+    # 現在のversionの表示
+    - rustup --version && cargo --version
+    # Cargo.lock の更新
+    - if [ "${USE_MINIMAL_VERSIONS:-false}" = "false" ]; then
+    -     time cargo +nightly update
+    - else
+    -     time cargo +nightly update -Z minimal-versions
+    - fi
+    - cargo fetch # ソースコードのダウンロード
+    - cargo fmt --all -- --check --verbose # フォーマットチェック
+    - cargo clippy --workspace --all-targets $FEATURES -- -D warnings
+    # テストを実行し結果をJUnit形式で出力
+    - cargo test --lib --workspace $FEATURES short -- -Z unstable-options --format=junit --report-time > lib.xml
+    - cargo test --doc --workspace $FEATURES -- -Z unstable-options --format=junit --report-time > doc.xml
+  cache:
+    - key: "rustup-settings"
+      paths:
+        - "rustup/settings.toml"
+    - key: "rustup-nightly"
+      paths:
+        - "rustup/toolchains/nightly-x86_64-unknown-linux-gnu/"
+        - "rustup/update-hashes/nightly-x86_64-unknown-linux-gnu"
+    - key: "rustup-$RUST_VERSION"
+      paths:
+        - "rustup/toolchains/$RUST_VERSION-x86_64-unknown-linux-gnu/"
+        - "rustup/update-hashes/$RUST_VERSION-x86_64-unknown-linux-gnu"
+    - key: "crates-$USE_MINIMAL_VERSIONS"
+      paths:
+        - cargo/registry/index/
+        - cargo/registry/cache/
+        - cargo/git/db/
+  artifacts:
+    when: always
+    paths:
+      - lib.xml
+      - doc.xml
+    reports:
+      junit:
+        - lib.xml
+        - doc.xml
+  variables:
+    CARGO_UNSTABLE_SPARSE_REGISTRY: "true"
+  parallel:
+    matrix:
+      - RUST_VERSION:
+        - "stable"
+        - "beta"
+        - "1.56.1" # MSRV
+        USE_MINIMAL_VERSIONS:
+        - "false"
+        - "true"
+        FEATURES:
+        - "--no-default-features"
+        - "--all-features"

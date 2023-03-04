@@ -154,7 +154,7 @@ fn test_mid4() {
         test_short_aux(1013 * n + 1009);
     }
 }
-/*
+
 #[test]
 fn test_long() {
     let n = 3 * 1024 * 1024 * 1024;
@@ -195,10 +195,9 @@ fn test_long() {
         }
     });
 }
-*/
 
 #[test]
-fn rev() {
+fn short_rev() {
     let v = vec![8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15];
     for i in 0..15 {
         let j = binary::index(i, 15);
