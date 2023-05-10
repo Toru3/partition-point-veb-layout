@@ -1,4 +1,4 @@
-image: "rust:latest"
+image: "toru3/rust:latest"
 
 test:
   stage: test
@@ -6,14 +6,11 @@ test:
     # キャッシュの設定
     - if [ "${DISABLE_CACHE:-false}" = "false" ]; then
     -     export CARGO_HOME="$CI_PROJECT_DIR/cargo"
-    -     export RUSTUP_HOME="$CI_PROJECT_DIR/rustup"
-    -     mkdir -p "$CARGO_HOME" "$RUSTUP_HOME"
+    -     mkdir -p "$CARGO_HOME"
     -     ln -s /usr/local/cargo/bin $CARGO_HOME/bin
     -     ln -s /usr/local/cargo/env $CARGO_HOME/env
     - fi
     # ツールのインストール
-    - rustup toolchain install "$RUST_VERSION" --component rustfmt clippy
-    - rustup install nightly
     - rustup default "$RUST_VERSION"
     # 現在のversionの表示
     - rustup --version && cargo --version
@@ -26,35 +23,13 @@ test:
     - cargo fetch # ソースコードのダウンロード
     - cargo fmt --all -- --check --verbose # フォーマットチェック
     - cargo clippy --workspace --all-targets $FEATURES -- -D warnings
-    # テストを実行し結果をJUnit形式で出力
-    - cargo test --lib --workspace $FEATURES short -- -Z unstable-options --format=junit --report-time > lib.xml
-    - cargo test --doc --workspace $FEATURES -- -Z unstable-options --format=junit --report-time > doc.xml
+    - cargo test --workspace $FEATURES
   cache:
-    - key: "rustup-settings"
-      paths:
-        - "rustup/settings.toml"
-    - key: "rustup-nightly"
-      paths:
-        - "rustup/toolchains/nightly-x86_64-unknown-linux-gnu/"
-        - "rustup/update-hashes/nightly-x86_64-unknown-linux-gnu"
-    - key: "rustup-$RUST_VERSION"
-      paths:
-        - "rustup/toolchains/$RUST_VERSION-x86_64-unknown-linux-gnu/"
-        - "rustup/update-hashes/$RUST_VERSION-x86_64-unknown-linux-gnu"
     - key: "crates-$USE_MINIMAL_VERSIONS"
       paths:
         - cargo/registry/index/
         - cargo/registry/cache/
         - cargo/git/db/
-  artifacts:
-    when: always
-    paths:
-      - lib.xml
-      - doc.xml
-    reports:
-      junit:
-        - lib.xml
-        - doc.xml
   variables:
     CARGO_UNSTABLE_SPARSE_REGISTRY: "true"
   parallel:
