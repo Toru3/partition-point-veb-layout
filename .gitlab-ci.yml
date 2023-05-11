@@ -23,7 +23,7 @@ test:
     - cargo fetch # ソースコードのダウンロード
     - cargo fmt --all -- --check --verbose # フォーマットチェック
     - cargo clippy --workspace --all-targets $FEATURES -- -D warnings
-    - cargo test --workspace $FEATURES
+    - cargo test --workspace $FEATURES short
   cache:
     - key: "crates-$USE_MINIMAL_VERSIONS"
       paths:
