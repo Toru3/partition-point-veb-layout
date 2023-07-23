@@ -198,7 +198,7 @@ fn test_long() {
 
 #[test]
 fn short_rev() {
-    let v = vec![8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15];
+    let v = [8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15];
     for i in 0..15 {
         let j = binary::index(i, 15);
         let k = v[j] - 1;
