@@ -184,7 +184,7 @@ pub fn index_rev(i: usize, size: usize) -> usize {
         let mut sum = 0;
         for d in 0..depth {
             let mid = binary_mid(end - start) + start;
-            if p >> (depth - d - 1) & 1 == 0 {
+            if (p >> (depth - d - 1)) & 1 == 0 {
                 end = mid;
                 sum = 2 * sum + 1;
             } else {
