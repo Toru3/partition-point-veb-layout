@@ -186,8 +186,8 @@ fn test_long() {
             let kl = veb_index(il, n);
             let ku = veb_index(iu, n);
             if jl != kl || ju != ku {
-                println!("v = {:?}", v);
-                println!("x = {:?}", x);
+                println!("v = {v:?}");
+                println!("x = {x:?}");
                 dbg!(n, t, il, iu, jl, ju, kl, ku,);
             }
             assert_eq!(jl, kl);
