@@ -24,7 +24,7 @@ fn get_range(index_rev: usize, l: usize, limit: u32) -> (usize, usize) {
     let mut start = 0;
     let mut end = l;
     for i in (0..limit).rev() {
-        let mid = (end - start + 1) / 2 + start;
+        let mid = (end - start).div_ceil(2) + start;
         if (index_rev >> i) & 1 == 0 {
             end = mid;
         } else {
