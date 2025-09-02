@@ -1,6 +1,6 @@
 [package]
 name = "partition-point-veb-layout"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Toru3 <ryuutet@gmail.com>"]
 edition = "2021"
 description = "partition_point van Emde Boas layout"
@@ -10,7 +10,7 @@ repository = "https://gitlab.com/Toru3/partition-point-veb-layout"
 readme = "README.md"
 keywords = ["algorithm", "partition_point", "binary_search", "van_Emde_Boas_layout", "cache-oblivious"]
 categories = ["algorithms"]
-rust-version = "1.66"
+rust-version = "1.80"
 
 [dependencies]
 rayon = { version = "1.7.0", optional = true }
